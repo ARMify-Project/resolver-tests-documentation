@@ -3869,35 +3869,47 @@ register configuration is handled properly, consistent with the behavior of <cod
 <code class="highlight language-python"><span class="n">test_alternate_register_and_alternate_group_exception</span></code>
 </h2>
 <div class="doc doc-contents">
-<p>TODO: Add description</p>
-<p><strong>Expected Outcome:</strong> TODO</p>
+<p>This test verifies that the parser rejects SVD files where a register is defined with both an alternateRegister
+and an alternateGroup attribute simultaneously. According to the SVD standard, these two attributes are mutually
+exclusive, and their simultaneous presence indicates an invalid file configuration.</p>
+<p><strong>Expected Outcome:</strong> The parser should raise a ProcessException indicating that a register cannot have both an
+alternateRegister and an alternateGroup defined. This behavior enforces the SVD standard's constraint on mutually
+exclusive alternate definitions.</p>
 <p><strong>Processable with svdconv:</strong> yes - but it shouldn't since it is contrary to the SVD standard</p>
 <details class="quote">
 <summary>Source code in <code>tests/test_process/test_logical_integrity.py</code></summary>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1634</span>
-<span class="normal">1635</span>
-<span class="normal">1636</span>
-<span class="normal">1637</span>
-<span class="normal">1638</span>
-<span class="normal">1639</span>
-<span class="normal">1640</span>
-<span class="normal">1641</span>
-<span class="normal">1642</span>
-<span class="normal">1643</span>
-<span class="normal">1644</span>
-<span class="normal">1645</span>
-<span class="normal">1646</span>
-<span class="normal">1647</span>
-<span class="normal">1648</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1651</span>
+<span class="normal">1652</span>
+<span class="normal">1653</span>
+<span class="normal">1654</span>
+<span class="normal">1655</span>
+<span class="normal">1656</span>
+<span class="normal">1657</span>
+<span class="normal">1658</span>
+<span class="normal">1659</span>
+<span class="normal">1660</span>
+<span class="normal">1661</span>
+<span class="normal">1662</span>
+<span class="normal">1663</span>
+<span class="normal">1664</span>
+<span class="normal">1665</span>
+<span class="normal">1666</span>
+<span class="normal">1667</span>
+<span class="normal">1668</span>
+<span class="normal">1669</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span>
     <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">raises</span><span class="o">=</span><span class="n">ProcessException</span><span class="p">,</span>
     <span class="n">reason</span><span class="o">=</span><span class="s2">"alternateGroup and alternateRegister are mutually exclusive"</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_alternate_register_and_alternate_group_exception</span><span class="p">(</span><span class="n">get_processed_device_from_testfile</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Device</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    TODO: Add description</span>
+<span class="sd">    This test verifies that the parser rejects SVD files where a register is defined with both an alternateRegister</span>
+<span class="sd">    and an alternateGroup attribute simultaneously. According to the SVD standard, these two attributes are mutually</span>
+<span class="sd">    exclusive, and their simultaneous presence indicates an invalid file configuration.</span>
 
-<span class="sd">    **Expected Outcome:** TODO</span>
+<span class="sd">    **Expected Outcome:** The parser should raise a ProcessException indicating that a register cannot have both an</span>
+<span class="sd">    alternateRegister and an alternateGroup defined. This behavior enforces the SVD standard's constraint on mutually</span>
+<span class="sd">    exclusive alternate definitions.</span>
 
 <span class="sd">    **Processable with svdconv:** yes - but it shouldn't since it is contrary to the SVD standard</span>
 <span class="sd">    """</span>
@@ -5790,16 +5802,16 @@ naming conflict, ensuring the integrity of the SVD description.</p>
 <code class="highlight language-python"><span class="n">test_ignore_empty_cluster</span></code>
 </h2>
 <div class="doc doc-contents">
-<p>TODO: Add description</p>
-<p><strong>Expected Outcome:</strong> TODO</p>
+<p>This test checks that empty clusters, that do not define any registers or nested elements, are ignored
+during parsing. The SVD file under test contains an empty cluster that should not produce any
+registers in the final device representation.</p>
+<p><strong>Expected Outcome:</strong> The parser should process the file without errors while issuing a warning, and only valid
+registers (with non-empty clusters) should be present. In this case, the peripheral "PeripheralA" should contain a
+register starting at offset 0x4.</p>
 <p><strong>Processable with svdconv:</strong> yes</p>
 <details class="quote">
 <summary>Source code in <code>tests/test_process/test_logical_integrity.py</code></summary>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1568</span>
-<span class="normal">1569</span>
-<span class="normal">1570</span>
-<span class="normal">1571</span>
-<span class="normal">1572</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1572</span>
 <span class="normal">1573</span>
 <span class="normal">1574</span>
 <span class="normal">1575</span>
@@ -5811,11 +5823,23 @@ naming conflict, ensuring the integrity of the SVD description.</p>
 <span class="normal">1581</span>
 <span class="normal">1582</span>
 <span class="normal">1583</span>
-<span class="normal">1584</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_ignore_empty_cluster</span><span class="p">(</span><span class="n">get_processed_device_from_testfile</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Device</span><span class="p">]):</span>
+<span class="normal">1584</span>
+<span class="normal">1585</span>
+<span class="normal">1586</span>
+<span class="normal">1587</span>
+<span class="normal">1588</span>
+<span class="normal">1589</span>
+<span class="normal">1590</span>
+<span class="normal">1591</span>
+<span class="normal">1592</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_ignore_empty_cluster</span><span class="p">(</span><span class="n">get_processed_device_from_testfile</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Device</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    TODO: Add description</span>
+<span class="sd">    This test checks that empty clusters, that do not define any registers or nested elements, are ignored</span>
+<span class="sd">    during parsing. The SVD file under test contains an empty cluster that should not produce any</span>
+<span class="sd">    registers in the final device representation.</span>
 
-<span class="sd">    **Expected Outcome:** TODO</span>
+<span class="sd">    **Expected Outcome:** The parser should process the file without errors while issuing a warning, and only valid</span>
+<span class="sd">    registers (with non-empty clusters) should be present. In this case, the peripheral "PeripheralA" should contain a</span>
+<span class="sd">    register starting at offset 0x4.</span>
 
 <span class="sd">    **Processable with svdconv:** yes</span>
 <span class="sd">    """</span>
@@ -5915,20 +5939,16 @@ naming conflict, ensuring the integrity of the SVD description.</p>
 <code class="highlight language-python"><span class="n">test_ignore_empty_cluster_two_level</span></code>
 </h2>
 <div class="doc doc-contents">
-<p>TODO: Add description</p>
-<p><strong>Expected Outcome:</strong> TODO</p>
+<p>This test validates that the parser can handle an empty cluster at a nested (two-level) hierarchy.
+If a cluster within a peripheral is empty (i.e. it does not contain any registers or sub-clusters), then
+that empty inner cluster should be ignored during the processing so that only valid register definitions
+are maintained.</p>
+<p><strong>Expected Outcome:</strong> The parser should process the file with a warning and return a device where the peripheral
+"PeripheralA" contains one valid register with an address offset of 0x4, ignoring any empty inner clusters.</p>
 <p><strong>Processable with svdconv:</strong> yes</p>
 <details class="quote">
 <summary>Source code in <code>tests/test_process/test_logical_integrity.py</code></summary>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1587</span>
-<span class="normal">1588</span>
-<span class="normal">1589</span>
-<span class="normal">1590</span>
-<span class="normal">1591</span>
-<span class="normal">1592</span>
-<span class="normal">1593</span>
-<span class="normal">1594</span>
-<span class="normal">1595</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1595</span>
 <span class="normal">1596</span>
 <span class="normal">1597</span>
 <span class="normal">1598</span>
@@ -5936,11 +5956,27 @@ naming conflict, ensuring the integrity of the SVD description.</p>
 <span class="normal">1600</span>
 <span class="normal">1601</span>
 <span class="normal">1602</span>
-<span class="normal">1603</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_ignore_empty_cluster_two_level</span><span class="p">(</span><span class="n">get_processed_device_from_testfile</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Device</span><span class="p">]):</span>
+<span class="normal">1603</span>
+<span class="normal">1604</span>
+<span class="normal">1605</span>
+<span class="normal">1606</span>
+<span class="normal">1607</span>
+<span class="normal">1608</span>
+<span class="normal">1609</span>
+<span class="normal">1610</span>
+<span class="normal">1611</span>
+<span class="normal">1612</span>
+<span class="normal">1613</span>
+<span class="normal">1614</span>
+<span class="normal">1615</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_ignore_empty_cluster_two_level</span><span class="p">(</span><span class="n">get_processed_device_from_testfile</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Device</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    TODO: Add description</span>
+<span class="sd">    This test validates that the parser can handle an empty cluster at a nested (two-level) hierarchy.</span>
+<span class="sd">    If a cluster within a peripheral is empty (i.e. it does not contain any registers or sub-clusters), then</span>
+<span class="sd">    that empty inner cluster should be ignored during the processing so that only valid register definitions</span>
+<span class="sd">    are maintained.</span>
 
-<span class="sd">    **Expected Outcome:** TODO</span>
+<span class="sd">    **Expected Outcome:** The parser should process the file with a warning and return a device where the peripheral</span>
+<span class="sd">    "PeripheralA" contains one valid register with an address offset of 0x4, ignoring any empty inner clusters.</span>
 
 <span class="sd">    **Processable with svdconv:** yes</span>
 <span class="sd">    """</span>
@@ -6050,24 +6086,17 @@ naming conflict, ensuring the integrity of the SVD description.</p>
 <code class="highlight language-python"><span class="n">test_ignore_empty_inner_cluster</span></code>
 </h2>
 <div class="doc doc-contents">
-<p>TODO: Add description</p>
-<p><strong>Expected Outcome:</strong> TODO</p>
+<p>This test ensures that the parser properly ignores empty inner clusters within a non-empty cluster.
+In the tested SVD file, the peripheral "PeripheralA" contains a valid cluster ("ClusterA") that in turn includes an
+inner cluster without registers. The parser should discard the empty inner cluster and process only the
+valid elements.</p>
+<p><strong>Expected Outcome:</strong> The device should contain two top-level entities under "PeripheralA": one cluster ("ClusterA")
+that contains a valid register "RegisterA" at offset 0x0, and a standalone register "RegisterA" at offset 0x4.
+A warning is issued regarding the ignored empty inner cluster.</p>
 <p><strong>Processable with svdconv:</strong> yes</p>
 <details class="quote">
 <summary>Source code in <code>tests/test_process/test_logical_integrity.py</code></summary>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1606</span>
-<span class="normal">1607</span>
-<span class="normal">1608</span>
-<span class="normal">1609</span>
-<span class="normal">1610</span>
-<span class="normal">1611</span>
-<span class="normal">1612</span>
-<span class="normal">1613</span>
-<span class="normal">1614</span>
-<span class="normal">1615</span>
-<span class="normal">1616</span>
-<span class="normal">1617</span>
-<span class="normal">1618</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1618</span>
 <span class="normal">1619</span>
 <span class="normal">1620</span>
 <span class="normal">1621</span>
@@ -6080,11 +6109,33 @@ naming conflict, ensuring the integrity of the SVD description.</p>
 <span class="normal">1628</span>
 <span class="normal">1629</span>
 <span class="normal">1630</span>
-<span class="normal">1631</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_ignore_empty_inner_cluster</span><span class="p">(</span><span class="n">get_processed_device_from_testfile</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Device</span><span class="p">]):</span>
+<span class="normal">1631</span>
+<span class="normal">1632</span>
+<span class="normal">1633</span>
+<span class="normal">1634</span>
+<span class="normal">1635</span>
+<span class="normal">1636</span>
+<span class="normal">1637</span>
+<span class="normal">1638</span>
+<span class="normal">1639</span>
+<span class="normal">1640</span>
+<span class="normal">1641</span>
+<span class="normal">1642</span>
+<span class="normal">1643</span>
+<span class="normal">1644</span>
+<span class="normal">1645</span>
+<span class="normal">1646</span>
+<span class="normal">1647</span>
+<span class="normal">1648</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_ignore_empty_inner_cluster</span><span class="p">(</span><span class="n">get_processed_device_from_testfile</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Device</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    TODO: Add description</span>
+<span class="sd">    This test ensures that the parser properly ignores empty inner clusters within a non-empty cluster.</span>
+<span class="sd">    In the tested SVD file, the peripheral "PeripheralA" contains a valid cluster ("ClusterA") that in turn includes an</span>
+<span class="sd">    inner cluster without registers. The parser should discard the empty inner cluster and process only the</span>
+<span class="sd">    valid elements.</span>
 
-<span class="sd">    **Expected Outcome:** TODO</span>
+<span class="sd">    **Expected Outcome:** The device should contain two top-level entities under "PeripheralA": one cluster ("ClusterA")</span>
+<span class="sd">    that contains a valid register "RegisterA" at offset 0x0, and a standalone register "RegisterA" at offset 0x4.</span>
+<span class="sd">    A warning is issued regarding the ignored empty inner cluster.</span>
 
 <span class="sd">    **Processable with svdconv:** yes</span>
 <span class="sd">    """</span>
@@ -6211,8 +6262,12 @@ naming conflict, ensuring the integrity of the SVD description.</p>
 <code class="highlight language-python"><span class="n">test_ignore_empty_peripheral</span></code>
 </h2>
 <div class="doc doc-contents">
-<p>TODO: Add description</p>
-<p><strong>Expected Outcome:</strong> TODO</p>
+<p>This test verifies that the parser correctly ignores peripheral definitions that do not contain any registers
+or clusters. In the provided SVD file, one or more empty peripheral sections are present. These empty definitions
+should be skipped, and only peripherals containing valid elements should be processed.</p>
+<p><strong>Expected Outcome:</strong> The parser should process the file while issuing a warning, and the resulting device should
+contain only two peripherals (e.g. "PeripheralA" and "PeripheralC") that include valid register definitions.
+Empty peripheral definitions are ignored.</p>
 <p><strong>Processable with svdconv:</strong> yes</p>
 <details class="quote">
 <summary>Source code in <code>tests/test_process/test_logical_integrity.py</code></summary>
@@ -6238,11 +6293,19 @@ naming conflict, ensuring the integrity of the SVD description.</p>
 <span class="normal">1562</span>
 <span class="normal">1563</span>
 <span class="normal">1564</span>
-<span class="normal">1565</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_ignore_empty_peripheral</span><span class="p">(</span><span class="n">get_processed_device_from_testfile</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Device</span><span class="p">]):</span>
+<span class="normal">1565</span>
+<span class="normal">1566</span>
+<span class="normal">1567</span>
+<span class="normal">1568</span>
+<span class="normal">1569</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_ignore_empty_peripheral</span><span class="p">(</span><span class="n">get_processed_device_from_testfile</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Device</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    TODO: Add description</span>
+<span class="sd">    This test verifies that the parser correctly ignores peripheral definitions that do not contain any registers</span>
+<span class="sd">    or clusters. In the provided SVD file, one or more empty peripheral sections are present. These empty definitions</span>
+<span class="sd">    should be skipped, and only peripherals containing valid elements should be processed.</span>
 
-<span class="sd">    **Expected Outcome:** TODO</span>
+<span class="sd">    **Expected Outcome:** The parser should process the file while issuing a warning, and the resulting device should</span>
+<span class="sd">    contain only two peripherals (e.g. "PeripheralA" and "PeripheralC") that include valid register definitions.</span>
+<span class="sd">    Empty peripheral definitions are ignored.</span>
 
 <span class="sd">    **Processable with svdconv:** yes</span>
 <span class="sd">    """</span>

@@ -600,39 +600,38 @@
 <div class="doc doc-object doc-module">
 <a id="tests.test_process.test_development"></a>
 <div class="doc doc-contents first">
-<p>TODO Add description</p>
+<p>This tests are designed to validate core aspects of the SVD processing and resolution algorithm and were used during
+the development of SVDSuite. They are not exhaustive and do not cover all possible edge cases or configurations.
+Instead, they focus on the fundamental functionality of the SVD processing and resolution algorithm, ensuring that the
+core features work as intended. It focuses on verifying that peripheral-level definitions and nested algorithmic
+derivations (including clusters, registers, and inherited enumerated values) are interpreted correctly.</p>
+<p>Each test evaluates different facets:
+- Peripheral level processing: verifying that each peripheral in the SVD is correctly derived and identified with the
+  proper name and base address.
+- Algorithm functionality: ensuring that nested clusters and registers are processed with the correct hierarchical
+  relationships and default/inherited properties.</p>
 <div class="doc doc-children">
 <div class="doc doc-object doc-function">
 <h2 class="doc doc-heading" id="tests.test_process.test_development.test_algorithm">
 <code class="highlight language-python"><span class="n">test_algorithm</span></code>
 </h2>
 <div class="doc doc-contents">
-<p>TODO: Add description</p>
-<p><strong>Expected Outcome:</strong> TODO</p>
-<p><strong>Processable with svdconv:</strong> TODO</p>
+<p>Test Comprehensive SVD Processing Algorithm</p>
+<p>This test evaluates the algorithm's ability to resolve and process nested SVD structures, including clusters,
+registers, and fields with enumerated values. It verifies that the nested hierarchy—involving inherited properties
+and explicit definitions—is correctly handled.</p>
+<p>In this scenario, the SVD file contains peripherals with embedded clusters and registers. The test ensures that:
+- The nested elements are correctly differentiated (clusters vs. registers).
+- Inheritance across the hierarchy is applied appropriately.
+- Default and overridden values are processed as per the SVD standard.</p>
+<p><strong>Expected Outcome:</strong>
+- The device should consist of 6 peripherals with proper hierarchical nesting.
+- Clusters and registers within these peripherals are resolved correctly, with each element having its
+  inherited or explicitly defined properties.</p>
+<p><strong>Processable with svdconv:</strong> yes</p>
 <details class="quote">
 <summary>Source code in <code>tests/test_process/test_development.py</code></summary>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 88</span>
 <span class="normal"> 89</span>
 <span class="normal"> 90</span>
 <span class="normal"> 91</span>
@@ -729,14 +728,58 @@
 <span class="normal">182</span>
 <span class="normal">183</span>
 <span class="normal">184</span>
-<span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"error::svdsuite.process.ProcessWarning"</span><span class="p">)</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"error::svdsuite.process.ProcessWarning"</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_algorithm</span><span class="p">(</span><span class="n">get_processed_device_from_testfile</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Device</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    TODO: Add description</span>
+<span class="sd">    Test Comprehensive SVD Processing Algorithm</span>
 
-<span class="sd">    **Expected Outcome:** TODO</span>
+<span class="sd">    This test evaluates the algorithm's ability to resolve and process nested SVD structures, including clusters,</span>
+<span class="sd">    registers, and fields with enumerated values. It verifies that the nested hierarchy—involving inherited properties</span>
+<span class="sd">    and explicit definitions—is correctly handled.</span>
 
-<span class="sd">    **Processable with svdconv:** TODO</span>
+<span class="sd">    In this scenario, the SVD file contains peripherals with embedded clusters and registers. The test ensures that:</span>
+<span class="sd">    - The nested elements are correctly differentiated (clusters vs. registers).</span>
+<span class="sd">    - Inheritance across the hierarchy is applied appropriately.</span>
+<span class="sd">    - Default and overridden values are processed as per the SVD standard.</span>
+
+<span class="sd">    **Expected Outcome:**</span>
+<span class="sd">    - The device should consist of 6 peripherals with proper hierarchical nesting.</span>
+<span class="sd">    - Clusters and registers within these peripherals are resolved correctly, with each element having its</span>
+<span class="sd">      inherited or explicitly defined properties.</span>
+
+<span class="sd">    **Processable with svdconv:** yes</span>
 <span class="sd">    """</span>
 
     <span class="n">device</span> <span class="o">=</span> <span class="n">get_processed_device_from_testfile</span><span class="p">(</span><span class="s2">"development/algorithm.svd"</span><span class="p">)</span>
@@ -1118,22 +1161,20 @@
 <code class="highlight language-python"><span class="n">test_peripheral_level</span></code>
 </h2>
 <div class="doc doc-contents">
-<p>TODO: Add description</p>
-<p><strong>Expected Outcome:</strong> TODO</p>
-<p><strong>Processable with svdconv:</strong> TODO</p>
+<p>Test Peripheral Level Processing</p>
+<p>This test validates that the parser correctly processes the peripheral definitions within an SVD file.
+It ensures that:
+- The device object contains the expected number of peripherals.
+- Each peripheral is assigned the correct name and base address as described in the SVD.</p>
+<p>This is critical to confirm that higher-level elements are correctly extracted prior to further processing of
+registers and clusters.</p>
+<p><strong>Expected Outcome:</strong>
+- The device should include 14 peripherals.
+- Each peripheral must have the expected name and base address as defined.</p>
+<p><strong>Processable with svdconv:</strong> no - svdconv does not support forward references</p>
 <details class="quote">
 <summary>Source code in <code>tests/test_process/test_development.py</code></summary>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">21</span>
 <span class="normal">22</span>
 <span class="normal">23</span>
 <span class="normal">24</span>
@@ -1177,14 +1218,44 @@
 <span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
-<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"error::svdsuite.process.ProcessWarning"</span><span class="p">)</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"error::svdsuite.process.ProcessWarning"</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_peripheral_level</span><span class="p">(</span><span class="n">get_processed_device_from_testfile</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Device</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    TODO: Add description</span>
+<span class="sd">    Test Peripheral Level Processing</span>
 
-<span class="sd">    **Expected Outcome:** TODO</span>
+<span class="sd">    This test validates that the parser correctly processes the peripheral definitions within an SVD file.</span>
+<span class="sd">    It ensures that:</span>
+<span class="sd">    - The device object contains the expected number of peripherals.</span>
+<span class="sd">    - Each peripheral is assigned the correct name and base address as described in the SVD.</span>
 
-<span class="sd">    **Processable with svdconv:** TODO</span>
+<span class="sd">    This is critical to confirm that higher-level elements are correctly extracted prior to further processing of</span>
+<span class="sd">    registers and clusters.</span>
+
+<span class="sd">    **Expected Outcome:**</span>
+<span class="sd">    - The device should include 14 peripherals.</span>
+<span class="sd">    - Each peripheral must have the expected name and base address as defined.</span>
+
+<span class="sd">    **Processable with svdconv:** no - svdconv does not support forward references</span>
 <span class="sd">    """</span>
 
     <span class="n">device</span> <span class="o">=</span> <span class="n">get_processed_device_from_testfile</span><span class="p">(</span><span class="s2">"development/peripheral_level.svd"</span><span class="p">)</span>
